@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Conta Segura</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Bem-vindo, {{ nome }}</h3>
+        <a href="/logout" class="btn btn-danger">Sair</a>
+    </div>
+
+    <h4 class="mb-3">Saldo: R$ {{ saldo }}</h4>
+
+    <!-- FORMULÁRIO -->
+    <form method="POST" action="/add" class="row g-2 mb-4">
+        <div class="col-md-4">
+            <input type="text" name="descricao" placeholder="Descrição" required class="form-control">
+        </div>
+
+        <div class="col-md-3">
+            <input type="number" step="0.01" name="valor" placeholder="Valor" required class="form-control">
+        </div>
+
+        <div class="col-md-3">
+            <select name="tipo" class="form-select">
+                <option value="receita">Receita</option>
+                <option value="despesa">Despesa</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100">Adicionar</button>
+        </div>
+    </form>
+
+    <!-- TABELA -->
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Tipo</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for d in dados %}
+            <tr>
+                <td>{{ d[0] }}</td>
+                <td>{{ d[1] }}</td>
+
+                {% if d[3] == 'receita' %}
+                    <td class="text-success">R$ {{ d[2] }}</td>
+                {% else %}
+                    <td class="text-danger">R$ {{ d[2] }}</td>
+                {% endif %}
+
+                <td>{{ d[3] }}</td>
+
+                <td>
+                    <a href="/edit/{{ d[0] }}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="/delete/{{ d[0] }}" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>
